@@ -1,4 +1,44 @@
-## 部署
+# 下载widnows编译好的版本
+
+加入环境变量
+
+记得 cmd环境全局代理翻墙
+
+#  forge 
+
+## 一 插件安装
+
+```shell
+forge install openzeppelin/openzeppelin-contracts
+```
+
+```shell
+forge install foundry-rs/forge-std
+```
+
+https://github.com/foundry-rs/forge-std
+
+删除依赖
+
+```javascript
+forge remove foundry-rs/forge-std
+```
+
+
+
+重新映射依赖项
+
+``` forge remappings```
+
+## 二 编译与测试
+
+```forge build```
+
+```forge test
+
+```
+
+## 三 部署
 
 ```shell
 // 部署到链上
