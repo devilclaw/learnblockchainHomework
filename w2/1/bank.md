@@ -25,31 +25,37 @@ contract bank {
         _totalSupply += msg.value;
     }
 
-    function balanceOf(address account)
-        public
-        view
-        virtual
-      
-        returns (uint256)
-    {
+    function balanceOf(address account) public view virtual returns (uint256) {
         return _balances[account];
     }
 
-    function totalSupply() public view virtual  returns (uint256) {
+    function totalSupply() public view virtual returns (uint256) {
         return _totalSupply;
     }
 
-
-    function withdrawAllMoney(address addr, uint256 tranAmount)
-        public
-        // view
-        virtual
-    {
+    //view表示函数不修改状态
+    //pure 表示函数不读取状态也不修改状态 不会消耗gas
+    //不知道为什么我的这个函数转账显示成功 但是钱包金额 没到账,合约账户余额也没有改变
+    function withdrawCreater(
+        address addr,
+        uint256 tranAmount 
+    ) public {
         require(msg.sender == owner, "you do not have the right to withdraw");
+        require(tranAmount != 0, "fail,value is zero !");
         (bool success, ) = addr.call{value: tranAmount}(new bytes(0));
-        require(success, "Transfer finish");
+        require(success,"Transfer fail");
+    }
+
+    function withdrawGuest(address addr, uint256 tranAmount) public {
+        require(_balances[msg.sender] >= tranAmount, "token not engougth");
+        require(tranAmount != 0, "fail,value is zero !");
+        require( addr == msg.sender, "only can withdraw self account");
+        _balances[msg.sender] -= tranAmount; 
+        (bool success,bytes memory returndata) = addr.call{value:tranAmount}(new bytes(0));
+        require(success,"Transfer fail");
     }
 }
+
 
 ```
 
